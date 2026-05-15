@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Elegant Moments</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .sidebar { background: var(--deep-green); color: white; min-height: 100vh; }
+        .nav-link { color: white !important; padding: 12px 20px; }
+        .nav-link:hover, .nav-link.active { background: rgba(248, 200, 220, 0.3); color: var(--blush) !important; }
+        .dashboard-card { border-radius: 15px; }
+        .portfolio-card { transition: all 0.3s; }
+        .portfolio-card:hover { transform: scale(1.03); }
+    </style>
+</head>
+<body>
+
+<div class="d-flex">
+
+    <!-- SIDEBAR -->
+    <div class="col-lg-2 sidebar p-4">
+        <h4 class="mb-4"><i class="fas fa-heart"></i> Elegant Moments</h4>
+        <ul class="nav flex-column">
+            <li><a href="#" onclick="showSection('dashboard')" class="nav-link" id="link-dashboard"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
+            <li><a href="#" onclick="showSection('inquiries')" class="nav-link active" id="link-inquiries"><i class="fas fa-envelope me-2"></i> Inquiries</a></li>
+            <li><a href="#" onclick="showSection('bookings')" class="nav-link" id="link-bookings"><i class="fas fa-calendar me-2"></i> Bookings</a></li>
+            <li><a href="#" onclick="showSection('portfolio')" class="nav-link" id="link-portfolio"><i class="fas fa-images me-2"></i> Portfolio</a></li>
+            <li><a href="#" onclick="showSection('blog')" class="nav-link" id="link-blog"><i class="fas fa-blog me-2"></i> Blog Posts</a></li>
+            <li><a href="#" onclick="showSection('clients')" class="nav-link" id="link-clients"><i class="fas fa-users me-2"></i> Clients</a></li>
+            <li><a href="#" onclick="showSection('settings')" class="nav-link" id="link-settings"><i class="fas fa-cog me-2"></i> Settings</a></li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="col-lg-10 p-5">
+
+        <!-- DASHBOARD (Added for completeness) -->
+        <div id="section-dashboard">
+            <h2 class="mb-4">Welcome back, Sherlyn!</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card dashboard-card bg-light">
+                        <div class="card-body">
+                            <h5><i class="fas fa-envelope"></i> Pending Inquiries</h5>
+                            <h3 class="text-warning">3</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card dashboard-card bg-light">
+                        <div class="card-body">
+                            <h5><i class="fas fa-calendar"></i> Upcoming Weddings</h5>
+                            <h3 class="text-success">2</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card dashboard-card bg-light">
+                        <div class="card-body">
+                            <h5><i class="fas fa-heart"></i> Happy Couples</h5>
+                            <h3 class="text-pink">42</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INQUIRIES - Unchanged -->
+        <div id="section-inquiries">
+            <div class="d-flex justify-content-between mb-4">
+                <h4>Inquiries</h4>
+                <button class="btn btn-gold" onclick="addNewInquiry()"><i class="fas fa-plus"></i> Add New Inquiry</button>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Couple</th>
+                        <th>Date</th>
+                        <th>Venue</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="row-1">
+                        <td>Anna & Miguel</td>
+                        <td>May 20, 2026</td>
+                        <td>Dipolog Beach Resort</td>
+                        <td><span class="badge bg-warning" id="status-1">Pending</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="viewInquiry(1)">View</button>
+                            <button class="btn btn-sm btn-success" onclick="approveInquiry(1)">Approve</button>
+                            <button class="btn btn-sm btn-danger" onclick="cancelInquiry(1)">Cancel</button>
+                        </td>
+                    </tr>
+                    <tr id="row-2">
+                        <td>Sarah & James</td>
+                        <td>June 12, 2026</td>
+                        <td>Dipolog Cathedral</td>
+                        <td><span class="badge bg-success" id="status-2">Confirmed</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="viewInquiry(2)">View</button>
+                            <button class="btn btn-sm btn-success" onclick="approveInquiry(2)">Approve</button>
+                            <button class="btn btn-sm btn-danger" onclick="cancelInquiry(2)">Cancel</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- BOOKINGS - Unchanged -->
+        <div id="section-bookings" class="d-none">
+            <h4>Bookings</h4>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Couple</th>
+                        <th>Wedding Date</th>
+                        <th>Package</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="booking-row-1">
+                        <td>Anna & Miguel</td>
+                        <td>May 20, 2026</td>
+                        <td>Signature Romance</td>
+                        <td><span class="badge bg-warning" id="booking-status-1">Pending</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="viewInquiry(1)">View</button>
+                            <button class="btn btn-sm btn-success" onclick="approveInquiry(1)">Approve</button>
+                            <button class="btn btn-sm btn-danger" onclick="cancelInquiry(1)">Cancel</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- PORTFOLIO - NEW CONTENT -->
+        <div id="section-portfolio" class="d-none">
+            <div class="d-flex justify-content-between mb-4">
+                <h4>Portfolio</h4>
+                <button class="btn btn-gold" onclick="addNewPortfolio()"><i class="fas fa-plus"></i> Add New Project</button>
+            </div>
+            
+            <div class="row">
+                <!-- Project 1 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card portfolio-card">
+                        <img src="https://i.pinimg.com/736x/e2/16/b2/e216b20ae2afb56a356df2cb2f0d8abc.jpg" class="card-img-top" alt="Beach Wedding">
+                        <div class="card-body">
+                            <h5>Anna & Miguel - Beach Romance</h5>
+                            <p class="text-muted">May 20, 2026 • Dipolog Beach Resort</p>
+                            <p>Romantic beach wedding with pastel florals and golden hour photography.</p>
+                            <button class="btn btn-sm btn-outline-primary" onclick="viewPortfolio(1)">View Gallery</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card portfolio-card">
+                        <img src="https://i1-e.pinimg.com/736x/62/72/04/627204848f8c14f2799586307d3891e1.jpg" class="card-img-top" alt="Cathedral Wedding">
+                        <div class="card-body">
+                            <h5>Sarah & James - Timeless Elegance</h5>
+                            <p class="text-muted">June 12, 2026 • Dipolog Cathedral</p>
+                            <p>Classic church wedding with luxurious white florals and candlelit reception.</p>
+                            <button class="btn btn-sm btn-outline-primary" onclick="viewPortfolio(2)">View Gallery</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card portfolio-card">
+                        <img src="https://i.pinimg.com/originals/63/b3/fd/63b3fd4ddf6550aad8c93dc620c788fc.jpg" class="card-img-top" alt="Garden Wedding">
+                        <div class="card-body">
+                            <h5>Rose & Daniel - Garden Intimacy</h5>
+                            <p class="text-muted">July 8, 2026 • Private Garden, Iligan</p>
+                            <p>Intimate garden wedding with boho details and fairy lights.</p>
+                            <button class="btn btn-sm btn-outline-primary" onclick="viewPortfolio(3)">View Gallery</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOG POSTS - NEW CONTENT -->
+        <div id="section-blog" class="d-none">
+            <div class="d-flex justify-content-between mb-4">
+                <h4>Blog Posts</h4>
+                <button class="btn btn-gold" onclick="addNewBlog()"><i class="fas fa-plus"></i> New Blog Post</button>
+            </div>
+            
+            <div class="row">
+                <!-- Blog 1 -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <span class="badge bg-primary mb-2">Wedding Tips</span>
+                            <h5>How to Choose the Perfect Wedding Venue in Dipolog City</h5>
+                            <p class="text-muted">May 10, 2026 • 8 min read</p>
+                            <p>Discover the best venues from Dipologt hat will make your dream wedding come true.</p>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="viewBlog(1)">Read Full Post</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog 2 -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <span class="badge bg-success mb-2">Trends 2026</span>
+                            <h5>2026 Wedding Color Trends: Soft Pastels & Warm Neutrals</h5>
+                            <p class="text-muted">May 5, 2026 • 6 min read</p>
+                            <p>From blush pinks to sage greens — the most elegant color palettes for this year.</p>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="viewBlog(2)">Read Full Post</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog 3 -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <span class="badge bg-info mb-2">Behind the Scenes</span>
+                            <h5>A Day in the Life of a Dipolog Wedding Planner</h5>
+                            <p class="text-muted">April 28, 2026 • 10 min read</p>
+                            <p>Take a peek at what really happens before your perfect day.</p>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="viewBlog(3)">Read Full Post</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CLIENTS - Unchanged -->
+        <div id="section-clients" class="d-none">
+            <h4>Clients</h4>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Couple</th>
+                        <th>Wedding Date</th>
+                        <th>Package</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Anna & Miguel</td>
+                        <td>May 20, 2026</td>
+                        <td>Signature Romance</td>
+                        <td>0912-345-6789</td>
+                        <td><span class="badge bg-success">Happy Client</span></td>
+                        <td><button class="btn btn-sm btn-info" onclick="viewClient(1)">View Activity</button></td>
+                    </tr>
+                    <tr>
+                        <td>Sarah & James</td>
+                        <td>June 12, 2026</td>
+                        <td>Luxury Forever</td>
+                        <td>0918-765-4321</td>
+                        <td><span class="badge bg-success">Happy Client</span></td>
+                        <td><button class="btn btn-sm btn-info" onclick="viewClient(2)">View Activity</button></td>
+                    </tr>
+                    <tr>
+                        <td>Rose & Daniel</td>
+                        <td>July 8, 2026</td>
+                        <td>Intimate Elegance</td>
+                        <td>0927-123-4567</td>
+                        <td><span class="badge bg-warning">Pending</span></td>
+                        <td><button class="btn btn-sm btn-info" onclick="viewClient(3)">View Activity</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SETTINGS - Unchanged -->
+        <div id="section-settings" class="d-none">
+            <h4>Settings</h4>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-header"><h5>Business Information</h5></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label>Business Name</label>
+                                    <input type="text" class="form-control" value="Elegant Moments Wedding Planner">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label>Contact Number</label>
+                                    <input type="text" class="form-control" value="+63 912 345 6789">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label>Email Address</label>
+                                <input type="email" class="form-control" value="sherlyn@elegantmoments.ph">
+                            </div>
+                            <button class="btn btn-gold">Save Changes</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header"><h5>Update Password</h5></div>
+                        <div class="card-body">
+                            <form id="passwordForm">
+                                <div class="mb-3">
+                                    <label>Current Password</label>
+                                    <input type="password" class="form-control" id="currentPass" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label>New Password</label>
+                                    <input type="password" class="form-control" id="newPass" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label>Confirm New Password</label>
+                                    <input type="password" class="form-control" id="confirmPass" required>
+                                </div>
+                                <button type="submit" class="btn btn-gold">Update Password</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function showSection(section) {
+        document.querySelectorAll('[id^="section-"]').forEach(sec => sec.classList.add('d-none'));
+        const target = document.getElementById('section-' + section);
+        if (target) target.classList.remove('d-none');
+
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+        const activeLink = document.getElementById('link-' + section);
+        if (activeLink) activeLink.classList.add('active');
+    }
+
+    // Inquiries Functions (Unchanged)
+    function viewInquiry(id) {
+        Swal.fire({
+            title: 'Inquiry Details',
+            html: `<strong>Couple:</strong> Anna & Miguel<br>
+                   <strong>Date:</strong> May 20, 2026<br>
+                   <strong>Venue:</strong> Dipolog Beach Resort<br>
+                   <strong>Message:</strong> We want a romantic beach wedding with lots of flowers.`,
+            icon: 'info',
+            confirmButtonColor: '#D4AF37'
+        });
+    }
+
+    function approveInquiry(id) {
+        const statusEl = document.getElementById('status-' + id);
+        if (statusEl) {
+            statusEl.className = "badge bg-success";
+            statusEl.textContent = "Approved";
+        }
+        Swal.fire('Approved!', '', 'success');
+    }
+
+    function cancelInquiry(id) {
+        Swal.fire({
+            title: 'Cancel Inquiry?',
+            icon: 'warning',
+            showCancelButton: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const statusEl = document.getElementById('status-' + id);
+                if (statusEl) {
+                    statusEl.className = "badge bg-danger";
+                    statusEl.textContent = "Cancelled";
+                }
+            }
+        });
+    }
+
+    function addNewInquiry() {
+        Swal.fire('New Inquiry Added', 'Inquiry successfully saved.', 'success');
+    }
+
+    // Clients View Activity (Unchanged)
+    function viewClient(id) {
+        Swal.fire({
+            title: 'Client Activity',
+            html: `<strong>Recent Activity:</strong><br>
+                   • Inquiry Received<br>
+                   • Consultation Done<br>
+                   • Package Selected`,
+            icon: 'info',
+            confirmButtonColor: '#D4AF37'
+        });
+    }
+
+    // Portfolio Functions
+    function addNewPortfolio() {
+        Swal.fire('New Portfolio Added', 'Project has been added to your portfolio.', 'success');
+    }
+
+    function viewPortfolio(id) {
+        Swal.fire({
+            title: 'Portfolio Gallery',
+            text: `Beautiful photos from wedding project #${id}`,
+            imageUrl: id === 1 ? 'https://picsum.photos/id/1015/800/600' : 
+                     id === 2 ? 'https://picsum.photos/id/201/800/600' : 
+                     'https://picsum.photos/id/133/800/600',
+            imageWidth: 600,
+            imageHeight: 400,
+            confirmButtonColor: '#D4AF37'
+        });
+    }
+
+    // Blog Functions
+    function addNewBlog() {
+        Swal.fire('New Blog Post', 'Draft saved. You can now edit the full post.', 'success');
+    }
+
+    function viewBlog(id) {
+        const titles = {
+            1: "How to Choose the Perfect Wedding Venue in Northern Mindanao",
+            2: "2026 Wedding Color Trends: Soft Pastels & Warm Neutrals",
+            3: "A Day in the Life of a Mindanao Wedding Planner"
+        };
+        Swal.fire({
+            title: titles[id] || 'Blog Post',
+            text: 'Full blog content would appear here in a real website.',
+            confirmButtonColor: '#D4AF37'
+        });
+    }
+
+    // Password Form (Unchanged)
+    document.getElementById('passwordForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        Swal.fire('Success!', 'Password updated successfully.', 'success').then(() => this.reset());
+    });
+
+    // Show Dashboard by default
+    window.onload = function() {
+        showSection('dashboard');
+    };
+</script>
+</body>
+</html>
