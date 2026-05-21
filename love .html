@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard | Elegant Moments</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    body{
+      font-family:'Lora', serif;
+      background:#FFF8F0;
+    }
+
+    .heading-font{
+      font-family:'Playfair Display', serif;
+    }
+
+    .sidebar{
+      background:linear-gradient(to bottom,#2E4F3A,#1F3A2B);
+    }
+
+    .status-approved{
+      background:#10b981;
+      color:white;
+      padding:6px 14px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .status-declined{
+      background:#ef4444;
+      color:white;
+      padding:6px 14px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .status-pending{
+      background:#f59e0b;
+      color:white;
+      padding:6px 14px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .card-hover{
+      transition:.3s;
+    }
+
+    .card-hover:hover{
+      transform:translateY(-5px);
+    }
+
+    table{
+      border-collapse:collapse;
+    }
+
+    th, td{
+      padding:16px;
+    }
+
+    .mobile-menu{
+      display:none;
+    }
+
+    @media(max-width:768px){
+
+      .sidebar{
+        position:fixed;
+        left:-100%;
+        top:0;
+        width:280px;
+        height:100%;
+        z-index:999;
+        transition:.3s;
+      }
+
+      .sidebar.active{
+        left:0;
+      }
+
+      .mobile-menu{
+        display:block;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+<div class="flex min-h-screen">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="sidebar w-72 text-white flex flex-col">
+
+    <div class="p-6 border-b border-white/20 text-center">
+      <h1 class="heading-font text-3xl">Elegant Moments</h1>
+      <p class="text-sm text-white/70 mt-1">Wedding Planner Admin</p>
+    </div>
+
+    <nav class="flex-1 p-4 space-y-2">
+
+      <nav class="flex-1 p-4 space-y-2">
+
+  <button onclick="showSection('dashboard', this)"
+  class="nav-btn w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">
+    <i class="fas fa-chart-line"></i> Dashboard
+  </button>
+
+  <button onclick="showSection('inquiries', this)"
+  class="nav-btn w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">
+    <i class="fas fa-envelope"></i> Inquiries
+  </button>
+
+  <button onclick="showSection('bookings', this)"
+  class="nav-btn w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">
+    <i class="fas fa-calendar-check"></i> Bookings
+  </button>
+
+  <button onclick="showSection('portfolio', this)"
+  class="nav-btn w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">
+    <i class="fas fa-image"></i> Portfolio
+  </button>
+
+  <button onclick="showSection('blog', this)"
+  class="nav-btn w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">
+    <i class="fas fa-newspaper"></i> Blog
+  </button>
+
+  <button onclick="showSection('clients', this)"
+  class="nav-btn w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">
+    <i class="fas fa-heart"></i> Clients
+  </button>
+
+  <button onclick="showSection('settings', this)"
+  class="nav-btn w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">
+    <i class="fas fa-gear"></i> Settings
+  </button>
+
+</nav>
+    <!-- ADMIN -->
+    <div class="p-4 border-t border-white/20">
+
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 rounded-full bg-pink-200 text-[#2E4F3A] flex items-center justify-center font-bold">
+          SN
+        </div>
+
+        <div>
+          <h4 class="font-semibold">Sherlyn Mae Noot</h4>
+          <p class="text-xs text-white/60">Administrator</p>
+        </div>
+      </div>
+
+      <button onclick="logout()" class="w-full bg-red-500 hover:bg-red-600 py-3 rounded-xl font-semibold">
+        Logout
+      </button>
+
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="flex-1 overflow-auto">
+
+    <!-- TOPBAR -->
+    <div class="bg-white shadow-sm px-6 py-4 flex justify-between items-center sticky top-0 z-40">
+
+      <div class="flex items-center gap-4">
+
+        <button onclick="toggleSidebar()" class="mobile-menu text-2xl text-[#2E4F3A]">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <h2 id="page-title" class="heading-font text-3xl text-[#2E4F3A]">
+          Dashboard
+        </h2>
+
+      </div>
+
+      <div class="text-sm text-gray-500">
+        Welcome Admin
+      </div>
+
+    </div>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="section p-8">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <div class="bg-white rounded-3xl p-6 shadow card-hover">
+          <p class="text-gray-500">Total Weddings</p>
+          <h3 id="total-weddings" class="text-5xl mt-3 heading-font text-[#2E4F3A]">0</h3>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 shadow card-hover">
+          <p class="text-gray-500">Pending Inquiries</p>
+          <h3 id="pending-inquiries" class="text-5xl mt-3 heading-font text-[#2E4F3A]">0</h3>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 shadow card-hover">
+          <p class="text-gray-500">Confirmed Bookings</p>
+          <h3 id="confirmed-bookings" class="text-5xl mt-3 heading-font text-[#2E4F3A]">0</h3>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 shadow card-hover">
+          <p class="text-gray-500">Happy Clients</p>
+          <h3 id="happy-clients" class="text-5xl mt-3 heading-font text-[#2E4F3A]">0</h3>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- INQUIRIES -->
+    <section id="inquiries" class="section hidden p-8">
+
+      <div class="bg-white rounded-3xl shadow overflow-x-auto">
+
+        <div class="p-6 border-b">
+          <h3 class="heading-font text-2xl text-[#2E4F3A]">
+            Inquiries Management
+          </h3>
+        </div>
+
+        <table class="w-full">
+
+          <thead class="bg-[#2E4F3A] text-white">
+            <tr>
+              <th>Name</th>
+              <th>Partner</th>
+              <th>Email</th>
+              <th>Date</th>
+              <th>Venue</th>
+              <th>Message</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody id="inquiries-body"></tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+    <!-- BOOKINGS -->
+    <section id="bookings" class="section hidden p-8">
+
+      <div class="bg-white rounded-3xl shadow overflow-x-auto">
+
+        <div class="p-6 border-b">
+          <h3 class="heading-font text-2xl text-[#2E4F3A]">
+            Bookings Management
+          </h3>
+        </div>
+
+        <table class="w-full">
+
+          <thead class="bg-[#2E4F3A] text-white">
+            <tr>
+              <th>Couple</th>
+              <th>Date</th>
+              <th>Venue</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody id="bookings-body"></tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section id="portfolio" class="section hidden p-8">
+
+      <h3 class="heading-font text-3xl text-[#2E4F3A] mb-8">
+        Portfolio Gallery
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <div class="bg-white rounded-3xl overflow-hidden shadow card-hover">
+          <img src="https://cdn.shopify.com/s/files/1/1552/7691/files/blush-sage-wedding-color.png?v=1770099553" class="w-full h-64 object-cover">
+          <div class="p-5">
+            <h4 class="font-semibold text-lg">Romantic Garden Wedding</h4>
+            <p class="text-gray-500 text-sm mt-1">Dipolog City</p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl overflow-hidden shadow card-hover">
+          <img src="https://images.stockcake.com/public/6/b/4/6b4bc2b1-ac44-41ce-a9d4-2c289d4e8dfc_large/sunset-beach-wedding-stockcake.jpg" class="w-full h-64 object-cover">
+          <div class="p-5">
+            <h4 class="font-semibold text-lg">Beach Sunset Ceremony</h4>
+            <p class="text-gray-500 text-sm mt-1">Dapitan Beach</p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl overflow-hidden shadow card-hover">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbBXNYX5yA7CAYrAiWw2pLaDkcV93aYfVksA&s" class="w-full h-64 object-cover">
+          <div class="p-5">
+            <h4 class="font-semibold text-lg">Elegant Luxury Wedding</h4>
+            <p class="text-gray-500 text-sm mt-1">Gold & Ivory Theme</p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- BLOG -->
+    <section id="blog" class="section hidden p-8">
+
+      <h3 class="heading-font text-3xl text-[#2E4F3A] mb-8">
+        Blog & Inspiration
+      </h3>
+
+      <div class="space-y-6">
+
+        <div class="bg-white p-6 rounded-3xl shadow">
+          <h4 class="text-xl font-semibold">
+            Top Wedding Venues in Dipolog 2026
+          </h4>
+
+          <p class="text-gray-600 mt-3">
+            Discover the best wedding venues for elegant indoor and outdoor celebrations.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-3xl shadow">
+          <h4 class="text-xl font-semibold">
+            Stress-Free Wedding Timeline Guide
+          </h4>
+
+          <p class="text-gray-600 mt-3">
+            Learn how to create the perfect wedding schedule for a smooth event.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- CLIENTS -->
+    <section id="clients" class="section hidden p-8">
+
+      <h3 class="heading-font text-3xl text-[#2E4F3A] mb-8">
+        Happy Clients
+      </h3>
+
+      <div class="grid md:grid-cols-2 gap-6">
+
+        <div class="bg-white p-6 rounded-3xl shadow">
+          <p class="italic">
+            "Sherlyn made our dream wedding come true!"
+          </p>
+
+          <h4 class="mt-4 font-semibold">
+            — Stephanie & Rafael
+          </h4>
+        </div>
+
+        <div class="bg-white p-6 rounded-3xl shadow">
+          <p class="italic">
+            "Everything was elegant and perfectly organized."
+          </p>
+
+          <h4 class="mt-4 font-semibold">
+            — Elena & Daniel
+          </h4>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="settings" class="section hidden p-8">
+
+      <div class="bg-white rounded-3xl p-8 shadow max-w-xl">
+
+        <h3 class="heading-font text-3xl text-[#2E4F3A] mb-6">
+          Settings
+        </h3>
+
+        <div class="space-y-5">
+
+          <div>
+            <label class="block mb-2 text-sm">Business Name</label>
+            <input type="text" value="Elegant Moments Wedding Planner" class="w-full border rounded-xl px-4 py-3">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm">Email</label>
+            <input type="email" value="sherlyn@elegantmoments.com" class="w-full border rounded-xl px-4 py-3">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm">Contact Number</label>
+            <input type="text" value="0917-123-4567" class="w-full border rounded-xl px-4 py-3">
+          </div>
+
+          <button class="bg-[#2E4F3A] hover:bg-[#1f3a2b] text-white px-8 py-3 rounded-xl">
+            Save Changes
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<script>
+
+const inquiries = JSON.parse(localStorage.getItem("inquiries")) || [];
+
+let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+
+function renderInquiries(){
+
+  const body = document.getElementById("inquiries-body");
+
+  body.innerHTML = "";
+
+  inquiries.forEach((item,index)=>{
+
+    body.innerHTML += `
+      <tr class="border-b hover:bg-gray-50">
+
+        <td>${item.name || "-"}</td>
+
+        <td>${item.partner || "-"}</td>
+
+        <td>${item.email || "-"}</td>
+
+        <td>${item.date || "-"}</td>
+
+        <td>${item.venue || "-"}</td>
+
+        <td>${item.message || "-"}</td>
+
+        <td>
+          <span class="status-pending">
+            PENDING
+          </span>
+        </td>
+
+        <td class="space-x-2">
+
+          <button onclick="approveInquiry(${index})"
+            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
+            Accept
+          </button>
+
+          <button onclick="declineInquiry(${index})"
+            class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm">
+            Decline
+          </button>
+
+        </td>
+
+      </tr>
+    `;
+  });
+}
+
+function renderBookings(){
+
+  const body = document.getElementById("bookings-body");
+
+  body.innerHTML = "";
+
+  bookings.forEach((item)=>{
+
+    body.innerHTML += `
+      <tr class="border-b hover:bg-gray-50">
+
+        <td>${item.name} & ${item.partner}</td>
+
+        <td>${item.date}</td>
+
+        <td>${item.venue}</td>
+
+        <td>
+          <span class="status-approved">
+            APPROVED
+          </span>
+        </td>
+
+      </tr>
+    `;
+  });
+}
+
+function approveInquiry(index){
+
+  const inquiry = inquiries[index];
+
+  bookings.push(inquiry);
+
+  localStorage.setItem("bookings", JSON.stringify(bookings));
+
+  inquiries.splice(index,1);
+
+  localStorage.setItem("inquiries", JSON.stringify(inquiries));
+
+  renderInquiries();
+  renderBookings();
+  updateDashboard();
+
+  alert("Inquiry Approved!");
+}
+
+function declineInquiry(index){
+
+  inquiries.splice(index,1);
+
+  localStorage.setItem("inquiries", JSON.stringify(inquiries));
+
+  renderInquiries();
+  updateDashboard();
+
+  alert("Inquiry Declined!");
+}
+
+function updateDashboard(){
+
+  document.getElementById("total-weddings").textContent =
+    bookings.length;
+
+  document.getElementById("pending-inquiries").textContent =
+    inquiries.length;
+
+  document.getElementById("confirmed-bookings").textContent =
+    bookings.length;
+
+  document.getElementById("happy-clients").textContent =
+    bookings.length;
+}
+
+function showSection(section){
+
+  document.querySelectorAll(".section")
+    .forEach(sec => sec.classList.add("hidden"));
+
+  document.getElementById(section)
+    .classList.remove("hidden");
+
+  document.getElementById("page-title").textContent =
+    section.charAt(0).toUpperCase() + section.slice(1);
+
+  if(window.innerWidth <= 768){
+    document.getElementById("sidebar")
+      .classList.remove("active");
+  }
+}
+
+function toggleSidebar(){
+  document.getElementById("sidebar")
+    .classList.toggle("active");
+}
+
+function logout(){
+
+  const confirmLogout = confirm(
+    "Are you sure you want to logout?"
+  );
+
+  if(confirmLogout){
+    window.location.href = "index.html";
+  }
+}
+
+window.onload = () => {
+
+  renderInquiries();
+
+  renderBookings();
+
+  updateDashboard();
+
+};
+
+</script>
+
+</body>
+</html>

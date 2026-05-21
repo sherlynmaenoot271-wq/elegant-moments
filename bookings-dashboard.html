@@ -1,0 +1,109 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Elegant Moments</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Lora', serif; }
+    .heading-font { font-family: 'Playfair Display', serif; }
+    .sidebar { background: linear-gradient(to bottom, #2E4F3A, #1F3A2B); }
+    .status-approved { background-color: #10b981; color: white; padding: 6px 14px; border-radius: 9999px; font-size: 0.85rem; }
+    .status-declined { background-color: #ef4444; color: white; padding: 6px 14px; border-radius: 9999px; font-size: 0.85rem; }
+    .status-pending { background-color: #eab308; color: white; padding: 6px 14px; border-radius: 9999px; font-size: 0.85rem; }
+  </style>
+</head>
+<body class="bg-[#FFF8F0]">
+
+<div class="flex h-screen">
+
+  <!-- Sidebar -->
+  <div class="sidebar w-72 text-white flex flex-col">
+    <div class="p-6 border-b border-white/20 text-center">
+      <h1 class="heading-font text-3xl">Elegant Moments</h1>
+      <p class="text-sm text-white/70">Wedding Planner</p>
+    </div>
+    
+    <nav class="flex-1 p-4 space-y-1">
+      <a href="#" onclick="showSection('dashboard')" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">🏠 Dashboard</a>
+      <a href="#" onclick="showSection('inquiries')" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">📩 Inquiries</a>
+      <a href="#" onclick="showSection('bookings')" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">📅 Bookings</a>
+      <a href="#" onclick="showSection('portfolio')" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">📸 Portfolio</a>
+      <a href="#" onclick="showSection('blog')" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">📰 Blog</a>
+      <a href="#" onclick="showSection('clients')" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">❤️ Clients</a>
+      <a href="#" onclick="showSection('settings')" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">⚙️ Settings</a>
+    </nav>
+
+    <div class="p-4 border-t border-white/20 mt-auto">
+      <div class="flex items-center gap-3 px-4 py-3">
+        <div class="w-10 h-10 bg-[#F8C8DC] rounded-full flex items-center justify-center text-[#2E4F3A] font-bold">SN</div>
+        <div>
+          <p class="font-medium">Sherlyn Mae Noot</p>
+          <p class="text-xs text-white/60">Administrator</p>
+        </div>
+      </div>
+      <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-3 text-red-200 hover:bg-white/10 rounded-xl mt-2 font-medium">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </div>
+ <!-- ==================== BOOKINGS ==================== -->
+    <div id="bookingsTable" class="p-8 hidden">
+      <h3 class="heading-font text-2xl mb-6">Bookings Management</h3>
+      <table class="w-full bg-white rounded-2xl overflow-hidden" id="bookings-table">
+        <thead class="bg-[#2E4F3A] text-white">
+          <tr>
+            <th class="py-4 px-6 text-left">Couple Name</th>
+            <th class="py-4 px-6 text-left">Wedding Date</th>
+            <th class="py-4 px-6 text-left">Package</th>
+            <th class="py-4 px-6 text-left">Status</th>
+            <th class="py-4 px-6 text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y text-sm" id="bookings-body"></tbody>
+      </table>
+    </div>
+    <script>
+function loadBookings() {
+  const bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+  const table = document.querySelector("#bookingsTable tbody");
+
+  if (!table) return;
+
+  table.innerHTML = "";
+
+  bookings.forEach((b, index) => {
+    const row = `
+      <tr class="border-b text-center">
+        <td class="p-3">${b.name || ""} & ${b.partner || ""}</td>
+        <td class="p-3">${b.date || ""}</td>
+        <td class="p-3">${b.package || "Standard"}</td>
+        <td class="p-3">
+          <span class="status-approved">Approved</span>
+        </td>
+        <td class="p-3">
+          <button onclick="removeBooking(${index})"
+            class="bg-red-500 text-white px-3 py-1 rounded-lg">
+            Remove
+          </button>
+        </td>
+      </tr>
+    `;
+    table.innerHTML += row;
+  });
+}
+
+function removeBooking(index) {
+  let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+
+  bookings.splice(index, 1);
+  localStorage.setItem("bookings", JSON.stringify(bookings));
+
+  loadBookings();
+}
+</script>
